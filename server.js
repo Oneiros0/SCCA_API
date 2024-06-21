@@ -1,4 +1,3 @@
-// server.js
 const fastify = require('fastify')({ logger: true });
 const dotenv = require('dotenv');
 const rawBody = require('fastify-raw-body');
@@ -54,13 +53,19 @@ fastify.post('/webhook', { preValidation: fastify.rawBody }, async (request, rep
 
 const start = async () => {
     try {
-      await fastify.listen(3000, '127.0.0.1');
+      await fastify.listen({
+        port: 3000,
+        host: '0.0.0.0',
+        https: {
+          key: fs.readFileSync('/etc/ssl/private/selfsigned.key'),
+          cert: fs.readFileSync('/etc/ssl/certs/selfsigned.crt'),
+        },
+      });
       console.log('Server is listening on port 3000');
     } catch (err) {
       fastify.log.error(err);
       process.exit(1);
     }
-  };
-  
-  start();
-  
+  };  
+
+start();
