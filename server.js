@@ -16,6 +16,12 @@ fastify.register(rawBody, {
   routes: [] // array of routes, it can be an array of strings (exact match) or regex
 });
 
+// Temporary basic endpoint to test server
+fastify.get('/', async (request, reply) => {
+  return { status: 'Server is running' };
+});
+
+// Stripe webhook endpoint
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 fastify.post('/webhook', { preValidation: fastify.rawBody }, async (request, reply) => {
@@ -47,13 +53,14 @@ fastify.post('/webhook', { preValidation: fastify.rawBody }, async (request, rep
 });
 
 const start = async () => {
-  try {
-    await fastify.listen(3000, '0.0.0.0');
-    console.log('Server is listening on port 3000');
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-};
-
-start();
+    try {
+      await fastify.listen(3000, '127.0.0.1');
+      console.log('Server is listening on port 3000');
+    } catch (err) {
+      fastify.log.error(err);
+      process.exit(1);
+    }
+  };
+  
+  start();
+  
