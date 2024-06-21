@@ -1,5 +1,6 @@
 const fastify = require('fastify')({ logger: true });
 const dotenv = require('dotenv');
+const fs = require('fs');
 const rawBody = require('fastify-raw-body');
 
 // Load environment variables from .env file
